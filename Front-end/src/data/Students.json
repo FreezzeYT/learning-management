@@ -1,0 +1,44 @@
+{
+  "10TH": {
+    "A": {
+      "NAMES": [
+        "Arjun Kumar", "Riya Sharma", "Vikram Das", "Neha Verma", "Siddharth Roy",
+        "Anjali Nair", "Rakesh Mehta", "Swati Kapoor", "Manish Tiwari", "Pallavi Joshi"
+      ]
+    },
+    "B": {
+      "NAMES": [
+        "Pooja Mishra", "Rahul Sen", "Sneha Gupta", "Amit Joshi", "Kiran Patel",
+        "Varun Iyer", "Megha Reddy", "Suresh Babu", "Deepak Sharma", "Ritu Verma"
+      ]
+    }
+  },
+  "11TH": {
+    "A": {
+      "NAMES": [
+        "Rajesh Khanna", "Sonia Paul", "Akhil Raj", "Priyanka Chopra", "Nitin Kumar",
+        "Sweta Pandey", "Rohan Malhotra", "Kavita Das", "Mohit Agarwal", "Simran Saini"
+      ]
+    },
+    "B": {
+      "NAMES": [
+        "Neeraj Chawla", "Bhavna Kapoor", "Amitabh Joshi", "Komal Reddy", "Tarun Saxena",
+        "Vidya Rao", "Sanjeev Nair", "Meena Singh", "Gopal Iyer", "Priya Shankar"
+      ]
+    }
+  },
+  "12TH": {
+    "A": {
+      "NAMES": [
+        "Varun Iyer", "Ananya Mehta", "Rohan Singh", "Simran Kaur", "Deepak Rao",
+        "Balaji Srinivasan", "Kavya Patel", "Sunil Menon", "Ishita Roy", "Harsh Malhotra"
+      ]
+    },
+    "B": {
+      "NAMES": [
+        "Meera Nair", "Saurabh Jain", "Priya Das", "Vivek Malhotra", "Tarun Saxena",
+        "Aditya Ghosh", "Kiran Deshmukh", "Neha Agrawal", "Siddharth Pillai", "Rashmi Verma"
+      ]
+    }
+  }
+}
