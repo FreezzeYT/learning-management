@@ -21,7 +21,7 @@ const Dashboard = () => {
         <div className="w-64 p-6 bg-white shadow-md rounded-lg text-center">
           <h3 className="text-xl font-semibold">
             {" "}
-            <FaChalkboardTeacher className="text-center m-auto" /> Teachers
+            <FaChalkboardTeacher className="text-center m-auto" /> Instructors
           </h3>
           <p className="text-gray-600 mt-2"> Total: 85</p>
         </div>

@@ -1,30 +1,64 @@
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  LineChart,
-  Line,
-  ResponsiveContainer,
-} from "recharts";
+import Chart from "react-apexcharts";
 
 const GraphComponent = () => {
-  const studentCourseData = [
-    { category: "Students", count: 1200 },
-    { category: "Courses", count: 25 },
-  ];
+  const studentCourseData = {
+    series: [
+      {
+        name: "Count",
+        data: [104, 1200, 89],
+      },
+    ],
+    options: {
+      chart: {
+        type: "bar",
+      },
+      xaxis: {
+        categories: ["Courses", "Students", "Instructors"],
+      },
+      colors: ["#3182CE"],
+    },
+  };
 
-  const performanceData = [
-    { month: "Jan", avgScore: 72 },
-    { month: "Feb", avgScore: 75 },
-    { month: "Mar", avgScore: 78 },
-    { month: "Apr", avgScore: 80 },
-    { month: "May", avgScore: 85 },
-    { month: "Jun", avgScore: 83 },
-  ];
+  const performanceData = {
+    series: [
+      {
+        name: "Average Score",
+        data: [72, 75, 78, 80, 85, 83],
+      },
+    ],
+    options: {
+      chart: {
+        type: "line",
+      },
+      xaxis: {
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      },
+      stroke: {
+        curve: "smooth",
+        width: 3,
+      },
+      colors: ["#E53E3E"],
+    },
+  };
+
+  const PieData = {
+    series: [250, 180, 220, 150, 200, 200],
+    options: {
+      chart: {
+        type: "pie",
+      },
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      colors: [
+        "#E53E3E",
+        "#3182CE",
+        "#F59E0B",
+        "#10B981",
+        "#8B5CF6",
+        "#EC4899",
+      ],
+    },
+  };
 
   return (
     <div className="container mx-auto mt-10">
@@ -33,41 +67,42 @@ const GraphComponent = () => {
       </h3>
 
       <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
-        {/* Bar Chart for Students and Courses */}
+        {/* Bar Chart */}
         <div className="bg-white shadow-md p-4 rounded-lg w-full md:w-1/2">
           <h4 className="text-xl font-semibold text-center mb-2">
-            Students & Courses Count
+            User & Course Distribution
           </h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={studentCourseData}>
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#3182CE" />
-            </BarChart>
-          </ResponsiveContainer>
+          <Chart
+            options={studentCourseData.options}
+            series={studentCourseData.series}
+            type="bar"
+            height={300}
+          />
         </div>
 
-        {/* Line Chart for Performance Trends */}
+        {/* Line Chart */}
         <div className="bg-white shadow-md p-4 rounded-lg w-full md:w-1/2">
           <h4 className="text-xl font-semibold text-center mb-2">
             Performance Over Time
           </h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={performanceData}>
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="avgScore"
-                stroke="#E53E3E"
-                strokeWidth={3}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <Chart
+            options={performanceData.options}
+            series={performanceData.series}
+            type="line"
+            height={300}
+          />
+        </div>
+        {/* Pie Chart */}
+        <div className="bg-white shadow-md p-4 rounded-lg w-full md:w-1/2">
+          <h4 className="text-xl font-semibold text-center mb-2">
+            No. of Students over months
+          </h4>
+          <Chart
+            options={PieData.options}
+            series={PieData.series}
+            type="pie"
+            height={300}
+          />
         </div>
       </div>
     </div>
