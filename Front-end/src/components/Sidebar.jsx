@@ -13,6 +13,8 @@ import { PiStudentFill } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { TbWritingSign } from "react-icons/tb";
 import { CiCircleList } from "react-icons/ci";
+import axios from "axios";
+import FetchProfile from "./Fetchprofile";
 
 const Sidebar = () => {
   const [profVisible, setProfVisible] = useState(false);
@@ -34,7 +36,21 @@ const Sidebar = () => {
     }
   };
 
+  //get userdata
+  const userData = async () => {
+    return await FetchProfile;
+  };
+  const [data, setdata] = useState();
+  console.log(data);
+  const fetchData = async () => {
+    const data = await FetchProfile(); // Call the function
+    setdata(data);
+    // console.log(data); // Now logs the resolved value, not a pending promise
+  };
+
   useEffect(() => {
+    fetchData();
+    //event listener for the mouse clicks
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -46,7 +62,7 @@ const Sidebar = () => {
       {/* Profile button */}
       <div
         ref={buttonRef}
-        className="w-12 fixed z-10 top-0 right-4 border border-black border-t-0 p-1 bg-gray-100 rounded-b-lg cursor-pointer hover:bg-gray-300"
+        className="w-12 fixed rounded z-10 top-0 right-4 border border-black border-t-0 p-1 bg-gray-100 rounded-b-lg cursor-pointer hover:bg-gray-300"
         onClick={() => setProfVisible((prev) => !prev)}
       >
         <CgProfile className="w-8 h-8 mt-1 text-center m-auto" />

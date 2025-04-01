@@ -2,37 +2,13 @@ import React, { useState } from "react";
 import { IoEnterOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Fetchprofile from "../components/Fetchprofile";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const fetchProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.error("No token found. Please log in.");
-        return;
-      }
-
-      const response = await axios.get("http://localhost:5803/auth/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("Profile Data:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error fetching profile:",
-        error.response?.data || error.message
-      );
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +20,9 @@ const LoginPage = () => {
       });
 
       localStorage.setItem("token", response.data.access_token);
-      const usrData = await fetchProfile();
+      const usrData = await Fetchprofile();
+      console.log(usrData);
+      console.log("#############################");
       setError("");
 
       if (usrData.role === "Admin") {

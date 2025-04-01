@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../components/Table";
 import EditCourseModal from "./EditeCourseModal";
+import Reactform from "../components/Reacfform";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -90,6 +91,7 @@ const Courses = () => {
           onUpdate={handleUpdateCourse}
         />
       )}
+      <Reactform />
     </div>
   );
 };
