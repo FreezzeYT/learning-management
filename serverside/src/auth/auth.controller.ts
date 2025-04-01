@@ -16,7 +16,9 @@ import { JwtAuthGuard } from './jwt-auth-guard';
 import { UserService } from 'src/user/user.service';
 import { RolesGuard } from './roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -25,6 +27,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @ApiResponse({ status: 200, description: 'User successfully registered !' })
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async register(@Body() UserDto: CreateUserData) {
     if (!UserDto.name || !UserDto.username || !UserDto.password) {
@@ -34,6 +37,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @ApiResponse({ status: 200, description: 'User logged in succesfully !' })
   async login(@Body() loginDTO: LoginUsrDto) {
     const user = await this.userservice.findbyusername(loginDTO.username);
 
@@ -43,6 +47,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Admin', 'Instructor', 'Student')
   @Get('profile')
+  @ApiResponse({ status: 20, description: 'request granted !' })
   getProfile(@Request() req) {
     return {
       username: req.user.username,
