@@ -35,7 +35,12 @@ const LoginPage = () => {
         navigate("/notfound");
       }
     } catch (error) {
-      setError("Invalid Credentials!");
+      if (error.code == "ERR_NETWORK")
+        setError("Unable to reach the server...");
+      else {
+        setError("Invalid Credentials!");
+      }
+      console.log(error);
     }
   };
 

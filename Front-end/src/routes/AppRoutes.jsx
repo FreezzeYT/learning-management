@@ -12,6 +12,7 @@ import Createcourse from "../pages/Createcourse";
 import Register from "../pages/Register";
 import LandingPage from "../pages/Landingpage";
 import ProtectedRoutes from "./ProtectedRoutes";
+import RoleProtectedRoute from "../components/RoleProtectedRoute";
 
 const AppRoutes = () => {
   return (
@@ -42,7 +43,14 @@ const AppRoutes = () => {
           </Route>
           <Route path="teachers" element={<Teachers />} />
           <Route path="students" element={<Students />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route
+            path="dashboard"
+            element={
+              <RoleProtectedRoute role="admin">
+                <Dashboard />
+              </RoleProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Fallback */}
