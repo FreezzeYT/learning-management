@@ -25,7 +25,7 @@ const LoginPage = () => {
       console.log("#############################");
       setError("");
 
-      if (usrData.role === "Admin") {
+      if (usrData.role === "Admin" || "Student") {
         navigate("/pages");
       } else {
         navigate("/notfound");
@@ -70,6 +70,7 @@ const LoginPage = () => {
             {error && <p className="text-red-500 mb-3">{error}</p>}
             <button
               type="submit"
+              id="login"
               className="text-white bg-blue-700 hover:bg-blue-800 text-center focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 flex items-center justify-center gap-2"
             >
               <IoEnterOutline className="w-6 h-6" />

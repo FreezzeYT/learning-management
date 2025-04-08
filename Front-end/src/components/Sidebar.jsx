@@ -8,23 +8,27 @@ import {
   FaChevronDown,
   FaChevronRight,
 } from "react-icons/fa6";
-import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { PiStudentFill } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { TbWritingSign } from "react-icons/tb";
 import { CiCircleList } from "react-icons/ci";
-import axios from "axios";
 import FetchProfile from "./Fetchprofile";
 
 const Sidebar = () => {
   const [profVisible, setProfVisible] = useState(false);
   const [open, setOpen] = useState(false);
-  const [courseMenuOpen, setCourseMenuOpen] = useState(false);
+  const [activeMenus, setActiveMenus] = useState({}); // Track submenus
+  const [Usrdata, setUsrdata] = useState({
+    name: "",
+    role: "",
+  });
+
   const navigate = useNavigate();
   const location = useLocation();
   const profileRef = useRef(null);
   const buttonRef = useRef(null);
 
+  // Handle click outside profile dropdown
   const handleClickOutside = (event) => {
     if (
       profileRef.current &&
@@ -36,36 +40,105 @@ const Sidebar = () => {
     }
   };
 
-  //get userdata
-  const userData = async () => {
-    return await FetchProfile;
-  };
-  const [data, setdata] = useState();
-  console.log(data);
-  const fetchData = async () => {
-    const data = await FetchProfile(); // Call the function
-    setdata(data);
-    // console.log(data); // Now logs the resolved value, not a pending promise
-  };
-
+  // Fetch user role
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await FetchProfile();
+        if (data?.role) {
+          console.log(data);
+          setUsrdata({ name: data.name, role: data.role });
+        }
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+      }
+    };
+
     fetchData();
-    //event listener for the mouse clicks
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+  // Sidebar menu items based on role
+  const menuItems = {
+    Admin: [
+      {
+        name: "Dashboard",
+        icon: <MdOutlineDashboard />,
+        path: "/pages/dashboard",
+      },
+      {
+        name: "Courses",
+        icon: <SiCoursera />,
+        subMenu: [
+          {
+            name: "List Courses",
+            path: "/pages/courses/list",
+            icon: <CiCircleList />,
+          },
+          {
+            name: "Create Course",
+            path: "/pages/courses/create",
+            icon: <TbWritingSign />,
+          },
+        ],
+      },
+      { name: "Students", icon: <PiStudentFill />, path: "/pages/students" },
+      {
+        name: "Teachers",
+        icon: <FaChalkboardTeacher />,
+        path: "/pages/teachers",
+      },
+    ],
+    teacher: [
+      {
+        name: "Dashboard",
+        icon: <MdOutlineDashboard />,
+        path: "/pages/dashboard",
+      },
+      {
+        name: "Courses",
+        icon: <SiCoursera />,
+        subMenu: [
+          {
+            name: "List Courses",
+            path: "/pages/courses/list",
+            icon: <CiCircleList />,
+          },
+        ],
+      },
+      { name: "Students", icon: <PiStudentFill />, path: "/pages/students" },
+    ],
+    Student: [
+      {
+        name: "Dashboard",
+        icon: <MdOutlineDashboard />,
+        path: "/pages/dashboard",
+      },
+      { name: "Courses", icon: <SiCoursera />, path: "/pages/courses/list" },
+    ],
+  };
+
+  // Toggle submenu state
+  const toggleSubMenu = (menuName) => {
+    setActiveMenus((prev) => ({
+      ...prev,
+      [menuName]: !prev[menuName],
+    }));
+  };
+
   return (
     <>
       {/* Profile button */}
       <div
         ref={buttonRef}
-        className="w-12 fixed rounded z-10 top-0 right-4 border border-black border-t-0 p-1 bg-gray-100 rounded-b-lg cursor-pointer hover:bg-gray-300"
+        className="w-auto fixed rounded z-10 top-0 right-4 border border-black border-t-0 p-1 bg-gray-100 rounded-b-lg cursor-pointer hover:bg-gray-300 flex flex-nowrap"
         onClick={() => setProfVisible((prev) => !prev)}
       >
         <CgProfile className="w-8 h-8 mt-1 text-center m-auto" />
+        <p className="text-center m-auto pl-1">{Usrdata.name}</p>
       </div>
 
       {/* Profile menu */}
@@ -92,111 +165,59 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={` top-0 bg-gray-100 text-gray-800 min-h-lvh ${
+        className={`top-0 bg-gray-100 text-gray-800 min-h-lvh ${
           open ? "min-w-64 max-w-64" : "min-w-20 max-w-20"
         } shadow-sm shadow-black relative duration-300`}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >
         <Link to="/pages/dashboard">
-          <h3 className="flex items-center gap-2 text-4xl font-poppins font-bold cursor-pointer hover:text-gray-300 pt-8 ml-3">
-            <FaSquareLetterboxd className=" ml-3 text-4xl" />
+          <h3 className="flex items-center gap-2 text-4xl font-bold cursor-pointer hover:text-gray-300 pt-8 ml-3">
+            <FaSquareLetterboxd className="ml-3 text-4xl" />
             {open ? "Exceed" : ""}
           </h3>
         </Link>
-        {/* <FaRegArrowAltCircleLeft 
-          className={`text-white text-3xl rounded-full absolute -right-3 bg-black cursor-pointer shadow-black border border-black ${!open && "rotate-180"} duration-300`} 
-           
-        /> */}
 
         <ul className="text-center mt-16">
-          {/* Dashboard */}
-
-          <Link title="Dashboard" to="/pages/dashboard">
-            <li
-              className={`p-5 text-xl cursor-pointer m-2 hover:bg-blue-700 font-thin text-lg hover:rounded-lg hover:text-white flex items-center gap-2 ${
-                location.pathname === "/pages/dashboard"
-                  ? "bg-blue-500 text-white rounded-lg"
-                  : "bg-transparent"
-              }`}
-            >
-              <MdOutlineDashboard className="w-6 h-6 mt-1" />
-              {open ? "Dashboard" : ""}
-            </li>
-          </Link>
-
-          {/* Courses - Main */}
-          <li
-            className={`p-5 text-xl cursor-pointer m-2 hover:bg-blue-700 font-thin hover:rounded-lg hover:text-white text-lg flex items-center gap-2 justify-between ${
-              location.pathname.includes("/pages/courses")
-                ? "bg-blue-500 text-white rounded-lg"
-                : "bg-transparent"
-            }`}
-            onClick={() => setCourseMenuOpen(!courseMenuOpen)}
-          >
-            <div className="flex items-center gap-2">
-              <SiCoursera className="w-6 h-6 mt-1" />
-              {open ? "Courses" : ""}
-            </div>
-            {open && (courseMenuOpen ? <FaChevronDown /> : <FaChevronRight />)}
-          </li>
-
-          {/* Courses - Submenu */}
-          {courseMenuOpen && open && (
-            <ul className="ml-10">
-              <Link title="List Courses" to="/pages/courses/list">
-                <li
-                  className={`p-3 text-lg cursor-pointer m-1 hover:bg-blue-500 hover:rounded-lg hover:text-white flex items-center gap-2 ${
-                    location.pathname === "/pages/courses/list"
-                      ? "bg-blue-400 text-white rounded-lg"
-                      : "bg-transparent"
-                  }`}
-                >
-                  <CiCircleList className="w-6 h-6 mt-1" /> List Courses
-                </li>
-              </Link>
-              <Link title="Create Course" to="/pages/courses/create">
-                <li
-                  className={`p-3 text-lg cursor-pointer m-1 hover:bg-blue-500 hover:rounded-lg hover:text-white flex items-center gap-2 ${
-                    location.pathname === "/pages/courses/create"
-                      ? "bg-blue-400 text-white rounded-lg"
-                      : "bg-transparent"
-                  }`}
-                >
-                  <TbWritingSign className="w-6 h-6 mt-1" />
-                  Create Course
-                </li>
-              </Link>
-            </ul>
-          )}
-
-          {/* Students */}
-          <Link title="Students" to="/pages/students">
-            <li
-              className={`p-5 text-xl cursor-pointer m-2 hover:bg-blue-700 font-thin text-lg hover:rounded-lg hover:text-white flex items-center gap-2 ${
-                location.pathname === "/pages/students"
-                  ? "bg-blue-500 text-white rounded-lg"
-                  : "bg-transparent"
-              }`}
-            >
-              <PiStudentFill className="w-6 h-6 mt-1" />
-              {open ? "Students" : ""}
-            </li>
-          </Link>
-
-          {/* Teachers */}
-          <Link title="Teachers" to="/pages/teachers">
-            <li
-              className={`p-5 text-xl cursor-pointer m-2 hover:bg-blue-700 font-thin text-lg hover:rounded-lg hover:text-white flex items-center gap-2 ${
-                location.pathname === "/pages/teachers"
-                  ? "bg-blue-500 text-white rounded-lg"
-                  : "bg-transparent"
-              }`}
-            >
-              <FaChalkboardTeacher className="w-6 h-6 mt-1" />
-              {open ? "Teachers" : ""}
-            </li>
-          </Link>
+          {menuItems[Usrdata.role]?.map((item, index) => (
+            <React.Fragment key={index}>
+              {item.subMenu ? (
+                <>
+                  <li
+                    className="p-5 text-xl cursor-pointer m-2 hover:bg-blue-700 font-thin hover:rounded-lg hover:text-white text-lg flex items-center gap-2 justify-between"
+                    onClick={() => toggleSubMenu(item.name)}
+                  >
+                    <div className="flex items-center gap-2">
+                      {item.icon} {open ? item.name : ""}
+                    </div>
+                    {open &&
+                      (activeMenus[item.name] ? (
+                        <FaChevronDown />
+                      ) : (
+                        <FaChevronRight />
+                      ))}
+                  </li>
+                  {activeMenus[item.name] && open && (
+                    <ul className="ml-10">
+                      {item.subMenu.map((subItem, subIndex) => (
+                        <Link key={subIndex} to={subItem.path}>
+                          <li className="p-3 text-lg cursor-pointer m-1 hover:bg-blue-500 hover:rounded-lg hover:text-white flex items-center gap-2">
+                            {subItem.icon} {subItem.name}
+                          </li>
+                        </Link>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <Link to={item.path}>
+                  <li className="p-5 text-xl cursor-pointer m-2 hover:bg-blue-700 font-thin hover:rounded-lg hover:text-white text-lg flex items-center gap-2">
+                    {item.icon} {open ? item.name : ""}
+                  </li>
+                </Link>
+              )}
+            </React.Fragment>
+          ))}
         </ul>
       </div>
     </>
