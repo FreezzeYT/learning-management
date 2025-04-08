@@ -92,7 +92,7 @@ const Sidebar = () => {
         path: "/pages/teachers",
       },
     ],
-    teacher: [
+    Instructor: [
       {
         name: "Dashboard",
         icon: <MdOutlineDashboard />,

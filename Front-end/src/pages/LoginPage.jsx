@@ -25,7 +25,11 @@ const LoginPage = () => {
       console.log("#############################");
       setError("");
 
-      if (usrData.role === "Admin" || "Student") {
+      if (
+        usrData.role === "Admin" ||
+        usrData.role === "Student" ||
+        usrData.role === "Instructor"
+      ) {
         navigate("/pages");
       } else {
         navigate("/notfound");

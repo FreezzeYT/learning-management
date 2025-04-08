@@ -5,22 +5,36 @@ import Layout from "../pages/Layout";
 import Home from "../pages/Home";
 import Dashboard from "../pages/Dashboard";
 import LoginPage from "../pages/LoginPage";
-// import Table from './components/Table'
 import Students from "../pages/Students";
 import Teachers from "../pages/Teachers";
 import Courses from "../pages/Courses";
 import Createcourse from "../pages/Createcourse";
 import Register from "../pages/Register";
 import LandingPage from "../pages/Landingpage";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={<LoginPage key={window.location.pathname} />}
+        />
+
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<LandingPage />} />
-        <Route path="/pages" element={<Layout />}>
+
+        {/* ✅ Protected Routes */}
+        <Route
+          path="/pages"
+          element={
+            <ProtectedRoutes>
+              <Layout />
+            </ProtectedRoutes>
+          }
+        >
           <Route index element={<Home />} />
           <Route path="courses">
             <Route path="list" element={<Courses />} />
@@ -30,8 +44,9 @@ const AppRoutes = () => {
           <Route path="students" element={<Students />} />
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
+
+        {/* Fallback */}
         <Route path="/*" element={<Notfound />} />
-        {/* <Route path='/table' element={<Table/>}/> */}
       </Routes>
     </Router>
   );
