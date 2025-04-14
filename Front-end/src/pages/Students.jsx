@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../components/Table";
+import ModalForm from "../components/ModalForm";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     axios
@@ -22,6 +24,16 @@ const Students = () => {
     <div className="container mx-auto mt-10">
       <h3 className="text-4xl text-center font-poppins">Students</h3>
       <hr className="mb-4" />
+      {/* Horizontal Line */}
+      <div class="flex items-center justify-end border p-2">
+        {/* <span class="mr-2">To Enroll new student:</span> */}
+        <button
+          class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
+          onClick={() => setShowModal(true)}
+        >
+          Enroll
+        </button>
+      </div>
 
       {students.length === 0 ? (
         <p className="text-gray-600 mt-2 font-bold text-center">
@@ -38,6 +50,7 @@ const Students = () => {
           }))}
         />
       )}
+      <ModalForm isOpen={showModal} />
     </div>
   );
 };

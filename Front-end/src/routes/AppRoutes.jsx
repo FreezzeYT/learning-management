@@ -41,7 +41,14 @@ const AppRoutes = () => {
             <Route path="list" element={<Courses />} />
             <Route path="create" element={<Createcourse />} />
           </Route>
-          <Route path="teachers" element={<Teachers />} />
+          <Route
+            path="teachers"
+            element={
+              <RoleProtectedRoute role="teacher">
+                <Teachers />
+              </RoleProtectedRoute>
+            }
+          />
           <Route path="students" element={<Students />} />
           <Route
             path="dashboard"

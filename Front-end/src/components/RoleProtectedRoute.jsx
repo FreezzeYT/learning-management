@@ -31,11 +31,11 @@ const RoleProtectedRoute = ({ children, role }) => {
         } else if (role === "admin") {
           setIsAuthorized(userRole === "Admin");
         } else if (role === "teacher") {
-          setIsAuthorized(userRole === "Teacher" || userRole === "Admin");
+          setIsAuthorized(userRole === "Instructor" || userRole === "Admin");
         } else if (role === "student") {
           setIsAuthorized(userRole === "Student" || userRole === "Admin");
         } else {
-          setIsAuthorized(false); // other role prop has passed
+          setIsAuthorized(false); // other role prop has passed "Instructor"
         }
       } catch (err) {
         console.error("Error fetching profile:", err);

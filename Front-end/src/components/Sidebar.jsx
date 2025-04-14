@@ -93,23 +93,28 @@ const Sidebar = () => {
       },
     ],
     Instructor: [
-      {
-        name: "Dashboard",
-        icon: <MdOutlineDashboard />,
-        path: "/pages/dashboard",
-      },
-      {
-        name: "Courses",
-        icon: <SiCoursera />,
-        subMenu: [
-          {
-            name: "List Courses",
-            path: "/pages/courses/list",
-            icon: <CiCircleList />,
-          },
-        ],
-      },
+      // {
+      //   name: "Dashboard",
+      //   icon: <MdOutlineDashboard />,
+      //   path: "/pages/dashboard",
+      // },
+      // {
+      //   name: "Courses",
+      //   icon: <SiCoursera />,
+      //   subMenu: [
+      //     {
+      //       name: "List Courses",
+      //       path: "/pages/courses/list",
+      //       icon: <CiCircleList />,
+      //     },
+      //   ],
+      // },
       { name: "Students", icon: <PiStudentFill />, path: "/pages/students" },
+      {
+        name: "Teachers",
+        icon: <FaChalkboardTeacher />,
+        path: "/pages/teachers",
+      },
     ],
     Student: [
       {
