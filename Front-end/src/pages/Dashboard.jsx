@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdCleaningServices } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { PiStudentFill } from "react-icons/pi";
 import { IoBookOutline } from "react-icons/io5";
 import GraphComponent from "../components/GraphsComponent";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
+  //states
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const loaderTimer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(loaderTimer);
+  }, []);
+
+  if (loading) return <Loader />;
   return (
     <>
       <h3 className="text-4xl text-center font-poppins">Dashboard</h3>

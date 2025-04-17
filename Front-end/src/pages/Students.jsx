@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../components/Table";
 import ModalForm from "../components/ModalForm";
+import Loader from "../components/Loader";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const loaderTimer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
     axios
       .get("http://localhost:5803/user")
       .then((res) => {
@@ -18,17 +24,19 @@ const Students = () => {
         setStudents(filteredStudents);
       })
       .catch((err) => console.error("Error fetching students: ", err));
+    return () => clearTimeout(loaderTimer);
   }, []);
 
+  if (loading) return <Loader />;
   return (
     <div className="container mx-auto mt-10">
       <h3 className="text-4xl text-center font-poppins">Students</h3>
       <hr className="mb-4" />
       {/* Horizontal Line */}
-      <div class="flex items-center justify-end border p-2">
+      <div className="flex items-center justify-end border p-2">
         {/* <span class="mr-2">To Enroll new student:</span> */}
         <button
-          class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
+          className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
           onClick={() => setShowModal(true)}
         >
           Enroll

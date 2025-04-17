@@ -8,6 +8,7 @@ import {
   FaChevronDown,
   FaChevronRight,
 } from "react-icons/fa6";
+import { MdClass } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { TbWritingSign } from "react-icons/tb";
@@ -68,6 +69,11 @@ const Sidebar = () => {
         name: "Dashboard",
         icon: <MdOutlineDashboard />,
         path: "/pages/dashboard",
+      },
+      {
+        name: "Department",
+        icon: <MdClass />,
+        path: "/pages/department",
       },
       {
         name: "Courses",

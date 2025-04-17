@@ -13,6 +13,7 @@ import Register from "../pages/Register";
 import LandingPage from "../pages/Landingpage";
 import ProtectedRoutes from "./ProtectedRoutes";
 import RoleProtectedRoute from "../components/RoleProtectedRoute";
+import Department from "../pages/Department";
 
 const AppRoutes = () => {
   return (
@@ -55,6 +56,14 @@ const AppRoutes = () => {
             element={
               <RoleProtectedRoute role="admin">
                 <Dashboard />
+              </RoleProtectedRoute>
+            }
+          />
+          <Route
+            path="department"
+            element={
+              <RoleProtectedRoute role="admin">
+                <Department />
               </RoleProtectedRoute>
             }
           />

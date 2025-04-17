@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../components/Table";
 import EditCourseModal from "./EditeCourseModal";
-import Reactform from "../components/Reacfform";
+import { FiEdit, FiTrash2 } from "react-icons/fi"; // ✅ Imported icons
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -15,7 +15,6 @@ const Courses = () => {
       .catch((err) => console.error("Error fetching courses: ", err));
   }, []);
 
-  //to delete from the db
   const handleDelete = (courseId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this course?"
@@ -37,7 +36,6 @@ const Courses = () => {
     setEditCourse(course);
   };
 
-  // datta gotten from the model is set to the state variable
   const handleUpdateCourse = (updatedCourse) => {
     setCourses((prevCourses) =>
       prevCourses.map((course) =>
@@ -64,18 +62,18 @@ const Courses = () => {
             description: course.courseDescription,
             tutor: course.tutorName,
             actions: (
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700"
+                  className="text-blue-600 hover:text-blue-800"
                   onClick={() => handleEdit(course)}
                 >
-                  Edit
+                  <FiEdit size={18} />
                 </button>
                 <button
-                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700"
+                  className="text-red-600 hover:text-red-800"
                   onClick={() => handleDelete(course._id)}
                 >
-                  Delete
+                  <FiTrash2 size={18} />
                 </button>
               </div>
             ),
@@ -83,7 +81,6 @@ const Courses = () => {
         />
       )}
 
-      {/* Edit Modal */}
       {editCourse && (
         <EditCourseModal
           course={editCourse}
@@ -91,7 +88,6 @@ const Courses = () => {
           onUpdate={handleUpdateCourse}
         />
       )}
-      <Reactform />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
-const ModalForm = () => {
+const ModalForm = ({ isOpen, onClose, onSubmit, title, fields }) => {
   const {
     register,
     handleSubmit,
@@ -17,14 +18,18 @@ const ModalForm = () => {
     onSubmit(data);
     closeAndReset();
   };
+
   if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg relative">
         <button
           onClick={closeAndReset}
           className="absolute top-2 right-3 text-xl font-bold text-gray-600 hover:text-red-500"
-        ></button>
+        >
+          &times;
+        </button>
         <h2 className="text-2xl font-semibold mb-4">{title}</h2>
 
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
