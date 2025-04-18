@@ -10,18 +10,25 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(userData: CreateUserData): Promise<User> {
+    const existingUser = await this.userModel
+      .findOne({ email: userData.email })
+      .exec();
+    if (existingUser) {
+      throw new ConflictException('Email is already registered');
+    }
+
     try {
       const hashedPwd = await bcrypt.hash(userData.password, 10);
       const newUser = new this.userModel({
         name: userData.name,
-        username: userData.username,
+        email: userData.email.toLowerCase().trim(),
         role: userData.role,
         password: hashedPwd,
       });
       return await newUser.save();
     } catch (error) {
       if (error.code === 11000) {
-        throw new ConflictException('Username is already taken');
+        throw new ConflictException('Email is already registered');
       }
       throw error;
     }
@@ -31,7 +38,7 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  async findbyusername(username: string): Promise<User | null> {
-    return this.userModel.findOne({ username }).exec();
+  async findbyemail(email: string): Promise<User | null> {
+    return this.userModel.findOne({ email }).exec();
   }
 }

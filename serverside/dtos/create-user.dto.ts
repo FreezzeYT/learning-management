@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  Matches,
+  Validate,
+} from 'class-validator';
 
 export class CreateUserData {
   @IsString()
@@ -7,14 +14,22 @@ export class CreateUserData {
   @ApiProperty()
   name: string;
 
-  @IsString()
-  @IsNotEmpty({ message: 'Username is required' })
+  @IsEmail()
+  @IsNotEmpty({ message: 'Email is required' })
   @ApiProperty()
-  username: string;
+  email: string;
 
+  @ApiProperty({
+    example: 'password@123',
+    description:
+      'Password must be at least 6 characters long, with a number and a special character',
+  })
   @IsString()
   @IsNotEmpty({ message: 'Password is required' })
-  @ApiProperty()
+  // @Matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/, {
+  //   message:
+  //     'Password must be at least 6 characters long, include at least one number and one special character',
+  // })
   password: string;
 
   @IsEnum(['Admin', 'Instructor', 'Student'])

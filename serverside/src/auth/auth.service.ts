@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   async login(loginDTO: LoginUsrDto) {
-    const user = await this.userService.findbyusername(loginDTO.username);
+    const user = await this.userService.findbyemail(loginDTO.email);
     // console.log("User gave pwd: ", loginDTO.password);
     // console.log("DB gave pwd: ", user?.password);
     if (!user || !(await bcrypt.compare(loginDTO.password, user.password))) {
@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     const payload = {
-      username: user.username,
+      email: user.email,
       name: user.name,
       _id: user._id,
       role: user.role,

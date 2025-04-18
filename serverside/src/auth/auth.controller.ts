@@ -27,19 +27,38 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  @ApiResponse({ status: 200, description: 'User successfully registered !' })
-  @UsePipes(new ValidationPipe({ whitelist: true }))
-  async register(@Body() UserDto: CreateUserData) {
-    if (!UserDto.name || !UserDto.username || !UserDto.password) {
+  @ApiResponse({ status: 200, description: 'User successfully registered!' })
+  async register(@Body() userDto: CreateUserData) {
+    const existingUser = await this.userservice.findbyemail(userDto.email);
+    if (existingUser) {
+      console.log('Email already exists: ', userDto.email);
+      throw new BadRequestException('Email is already registered');
+    }
+
+    if (!userDto.name || !userDto.email || !userDto.password) {
+      console.log('Missing required fields');
       throw new BadRequestException('All fields are required');
     }
-    return this.authService.register(UserDto);
+
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+    if (!passwordRegex.test(userDto.password)) {
+      console.log('Invalid password format');
+      throw new BadRequestException(
+        'Password must be at least 6 characters long, include at least one number and one special character',
+      );
+    }
+
+    // Step 3: After email check and manual password validation, proceed to register
+    console.log(
+      'Email and password validation passed, proceeding to register user',
+    );
+    return this.authService.register(userDto);
   }
 
   @Post('login')
   @ApiResponse({ status: 200, description: 'User logged in succesfully !' })
   async login(@Body() loginDTO: LoginUsrDto) {
-    const user = await this.userservice.findbyusername(loginDTO.username);
+    const user = await this.userservice.findbyemail(loginDTO.email);
 
     return this.authService.login(loginDTO);
   }
@@ -50,7 +69,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'request granted !' })
   getProfile(@Request() req) {
     return {
-      username: req.user.username,
+      email: req.user.email,
       name: req.user.name || 'Name missing',
       _id: req.user._id,
       role: req.user.role || 'Role missing',
@@ -63,7 +82,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'request granted !' })
   getStudentProfile(@Request() req) {
     return {
-      username: req.user.username,
+      email: req.user.email,
       name: req.user.name || 'Name missing',
       _id: req.user._id,
       role: req.user.role || 'Role missing',
