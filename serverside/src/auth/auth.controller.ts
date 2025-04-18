@@ -47,8 +47,21 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Admin', 'Instructor', 'Student')
   @Get('profile')
-  @ApiResponse({ status: 20, description: 'request granted !' })
+  @ApiResponse({ status: 200, description: 'request granted !' })
   getProfile(@Request() req) {
+    return {
+      username: req.user.username,
+      name: req.user.name || 'Name missing',
+      _id: req.user._id,
+      role: req.user.role || 'Role missing',
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('Admin', 'Instructor', 'Student')
+  @Get('student-profile')
+  @ApiResponse({ status: 200, description: 'request granted !' })
+  getStudentProfile(@Request() req) {
     return {
       username: req.user.username,
       name: req.user.name || 'Name missing',

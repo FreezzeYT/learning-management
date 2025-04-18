@@ -7,41 +7,42 @@ import { UpdateCourseDetails } from 'dtos/update-course.dto';
 
 @Injectable()
 export class CourseService {
-constructor(@InjectModel(Course.name) private courseModel: Model<CourseDocument>){}
+  constructor(
+    @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
+  ) {}
 
-async create(courseData: CreateCourseData): Promise<Course> {
-  const newCourse = new this.courseModel(courseData);
+  async create(courseData: CreateCourseData): Promise<Course> {
+    const newCourse = new this.courseModel(courseData);
 
-  // console.log(newCourse);
-  
-  return newCourse.save();
+    // console.log(newCourse);
 
-}
-
-async findall(): Promise<Course[]> {
-  return this.courseModel.find().exec();
-}
-
-async delete(id: string): Promise<{message: string}>{
-  const deletedCourse = await this.courseModel.findByIdAndDelete(id);
-
-  if(!deletedCourse){
-    throw new NotFoundException(`Course with ID ${id} not found`);
-  }
-  return {message: `Course with ID ${id} deleted`};
-}
-
-async update(id: string, updatecourse: UpdateCourseDetails): Promise<Course>{
-  const updatedCourse = await this.courseModel.findByIdAndUpdate(id, updatecourse, 
-    {new: true,
-    runValidators: true}
-
-  );
-  if(!updatedCourse) {
-    throw new NotFoundException(`Course with ID ${id} not found`);
+    return newCourse.save();
   }
 
-  return updatedCourse;
-}
+  async findall(): Promise<Course[]> {
+    return this.courseModel.find().exec();
+  }
 
+  async delete(id: string): Promise<{ message: string }> {
+    const deletedCourse = await this.courseModel.findByIdAndDelete(id);
+
+    if (!deletedCourse) {
+      throw new NotFoundException(`Course with ID ${id} not found`);
+    }
+    return { message: `Course with ID ${id} deleted` };
+  }
+
+  async update(id: string, updatecourse: UpdateCourseDetails): Promise<Course> {
+    const updatedCourse = await this.courseModel.findByIdAndUpdate(
+      id,
+      updatecourse,
+      { new: true, runValidators: true },
+    );
+    if (!updatedCourse) {
+      throw new NotFoundException(`Course with ID ${id} not found`);
+    }
+
+    Object.assign(updatedCourse, updatecourse);
+    return updatedCourse.save();
+  }
 }
