@@ -22,6 +22,15 @@ export class User extends Document {
   })
   role: string;
 
+  @Prop()
+  resetOtp?: string;
+
+  @Prop()
+  otpExpiry?: Date;
+
+  @Prop({ default: false })
+  isOtpVerified?: boolean;
+
   @Prop({
     type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Course' }],
     default: [],

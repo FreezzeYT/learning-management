@@ -8,6 +8,7 @@ import {
   UsePipes,
   ValidationPipe,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserData } from 'dtos/create-user.dto';
@@ -17,6 +18,9 @@ import { UserService } from 'src/user/user.service';
 import { RolesGuard } from './roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ForgotPasswordDto } from 'dtos/forgot-password.dto';
+import { VerifyOtpDto } from 'dtos/verify-otp.dto';
+import { ResetPasswordDto } from 'dtos/reset-password.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -87,5 +91,22 @@ export class AuthController {
       _id: req.user._id,
       role: req.user.role || 'Role missing',
     };
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
+    return this.authService.sendForgotPasswordOtp(body.email);
+  }
+
+  @Post('verify-otp')
+  async verifyOtp(@Body() body: VerifyOtpDto) {
+    return this.authService.verifyOtp(body.email, body.otp);
+  }
+
+  @Post('reset-password')
+  @UseGuards(JwtAuthGuard)
+  async resetPassword(@Req() req, @Body() body: ResetPasswordDto) {
+    const email = req.user.email;
+    return this.authService.resetPassword(email, body.newPassword);
   }
 }
