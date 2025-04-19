@@ -5,7 +5,7 @@ import axios from "axios";
 import Fetchprofile from "../components/Fetchprofile";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post("http://localhost:5803/auth/login", {
-        username,
+        email,
         password,
       });
 
@@ -61,10 +61,10 @@ const LoginPage = () => {
             <input
               type="text"
               id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-gray-50 border border-gray-600 text-gray-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4"
-              placeholder="Enter Username"
+              placeholder="Enter Email"
               required
             />
             <input
@@ -72,10 +72,20 @@ const LoginPage = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-gray-50 border border-gray-600 text-gray-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4"
+              className="bg-gray-50 border border-gray-600 text-gray-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="Enter Password"
               required
             />
+
+            <div className="flex justify-end mb-5 mt-1">
+              <span
+                className="text-blue-600 text-sm cursor-pointer hover:underline"
+                onClick={() => navigate("/forgot-password")}
+              >
+                Forgot your password?
+              </span>
+            </div>
+
             {error && <p className="text-red-500 mb-3">{error}</p>}
             <button
               type="submit"

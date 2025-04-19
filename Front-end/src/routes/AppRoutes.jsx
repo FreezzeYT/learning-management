@@ -10,10 +10,12 @@ import Teachers from "../pages/Teachers";
 import Courses from "../pages/Courses";
 import Createcourse from "../pages/Createcourse";
 import Register from "../pages/Register";
-import LandingPage from "../pages/Landingpage";
 import ProtectedRoutes from "./ProtectedRoutes";
 import RoleProtectedRoute from "../components/RoleProtectedRoute";
 import Department from "../pages/Department";
+import ForgotPassword from "../pages/ForgotPassword";
+import VerifyOtp from "../pages/VerifyOtp";
+import Resetpassword from "../pages/Resetpassword";
 
 const AppRoutes = () => {
   return (
@@ -26,7 +28,9 @@ const AppRoutes = () => {
         />
 
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<LandingPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/reset-password" element={<Resetpassword />} />
 
         {/* ✅ Protected Routes */}
         <Route

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
-    username: "",
+    email: "",
     password: "",
     role: "Student", // default role
   });
@@ -30,7 +30,7 @@ const Register = () => {
         formData
       );
       setSuccess("Registration successful!");
-      setFormData({ name: "", username: "", password: "", role: "Student" });
+      setFormData({ name: "", email: "", password: "", role: "Student" });
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -65,11 +65,11 @@ const Register = () => {
             />
             <input
               type="text"
-              name="username"
-              value={formData.username}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className="bg-gray-50 border border-gray-600 text-gray-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Enter Username"
+              placeholder="Enter Email"
               required
             />
             <input
